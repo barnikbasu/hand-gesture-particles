@@ -140,3 +140,19 @@ function animate() {
 
 setTemplate('hearts');
 animate();
+
+let prevTip = null;
+
+function airPaint(hand){
+  const tip = hand[8];
+  if(!prevTip) prevTip = tip;
+
+  const speed = Math.hypot(tip.x-prevTip.x, tip.y-prevTip.y);
+
+  if(speed > 0.01){
+    spawnParticleAt(tip.x, tip.y, speed * 120);
+  }
+
+  prevTip = tip;
+}
+
