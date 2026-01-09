@@ -49,8 +49,6 @@ git clone https://github.com/barnikbasu/hand-gesture-particles
 Open index.html using GitHub Pages or any static server.
 Allow webcam permission and start interacting instantly.
 
-📸 Screenshots & Demos
-Show real-time interaction with your hands controlling the particle universe.
 
 Gesture Control	Arcade Mode
 
