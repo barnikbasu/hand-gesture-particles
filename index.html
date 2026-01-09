@@ -6,7 +6,7 @@
 </head>
 <body>
     <div id="ui-container">
-        <h2>Particle Control</h2>
+        <h2>Gesture: <span id="gesture-name">None</span></h2>
         <div class="controls">
             <button id="heartBtn">❤️ Hearts</button>
             <button id="flowerBtn">🌸 Flowers</button>
@@ -14,12 +14,21 @@
             <input type="color" id="colorPicker" value="#00ffcc">
         </div>
     </div>
-    <div id="video-container"><video id="webcam" autoplay playsinline></video></div>
+    <div id="video-container">
+        <video id="webcam" autoplay playsinline></video>
+    </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+    <!-- MediaPipe and Fingerpose -->
+    <script src="cdn.jsdelivr.net"></script>
+    <script src="cdn.jsdelivr.net"></script>
+    <script src="https://cdn.jsdelivr.net/npm/fingerpose@0.1.0/dist/fingerpose.min.js"></script>
+
     <script type="importmap">
-        { "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js" } }
+    {
+        "imports": {
+            "three": "unpkg.com"
+        }
+    }
     </script>
     <script type="module">
         import { setTemplate, updateColor } from './main.js';
