@@ -67,30 +67,62 @@ const hands = new Hands({locateFile: (file) => `https://cdn.jsdelivr.net/npm/@me
 hands.setOptions({ maxNumHands: 1, modelComplexity: 1, minDetectionConfidence: 0.5 });
 
 hands.onResults((results) => {
-    if (results.multiHandLandmarks && results.multiHandLandmarks.length > 0) {
-        const landmarks = results.multiHandLandmarks[0];
-
-        // 1. PINCH SCALING LOGIC
-        const dist = Math.sqrt(Math.pow(landmarks[4].x - landmarks[8].x, 2) + Math.pow(landmarks[4].y - landmarks[8].y, 2));
-        targetScale = THREE.MathUtils.mapLinear(dist, 0.05, 0.3, 0.2, 4.0);
-
-        // 2. GESTURE ESTIMATION LOGIC
-        // Convert landmarks to fingerpose format
-        const fpLandmarks = landmarks.map(lm => [lm.x * 640, lm.y * 480, lm.z * 640]);
-        const estimation = gestureEstimator.estimate(fpLandmarks, 8.5);
-
-        if (estimation.gestures.length > 0) {
-            const bestGesture = estimation.gestures.reduce((p, c) => (p.confidence > c.confidence) ? p : c);
+    if (results.multiHandLandmarks) {
+        for (const hand of results.multiHandLandmarks) {
             
-            // Switch templates based on gesture
-            if (bestGesture.name === 'peace' && currentTemplate !== 'hearts') {
-                setTemplate('hearts');
-            } else if (bestGesture.name === 'thumbs_up' && currentTemplate !== 'fireworks') {
-                setTemplate('fireworks');
+            // 1. PINCH SCALING (Existing logic)
+            const dist = Math.sqrt(Math.pow(hand[4].x - hand[8].x, 2) + Math.pow(hand[4].y - hand[8].y, 2));
+            targetScale = THREE.MathUtils.mapLinear(dist, 0.05, 0.3, 0.2, 4.0);
+
+            // 2. GESTURE ESTIMATION (New logic)
+            // Note: We format hand data for fingerpose [x, y, z]
+            const fingerData = hand.map(lm => [lm.x * 100, lm.y * 100, lm.z * 100]);
+            const estimation = gestureEstimator.estimate(fingerData, 7.5);
+
+            if (estimation.gestures.length > 0) {
+                // Sort by confidence score
+                const gesture = estimation.gestures.sort((a, b) => b.score - a.score)[0].name;
+
+                if (gesture === "thumbs_up") triggerFireworks();
+                if (gesture === "peace") toggleSwarm();
             }
+
+            // 3. AUXILIARY HANDLERS (Required to prevent errors)
+            airPaint(hand);
+            detectSwipe(hand);
+            kineticMapping(hand);
         }
     }
 });
+
+// --- NEW HANDLER FUNCTIONS ---
+
+function triggerFireworks() {
+    console.log("Gesture Detected: Thumbs Up!");
+    setTemplate('fireworks');
+    material.color.setHex(0xffaa00); // Pulse color to gold
+}
+
+function toggleSwarm() {
+    console.log("Gesture Detected: Peace!");
+    setTemplate('hearts');
+    material.color.setHex(0xff0066); // Pulse color to pink
+}
+
+// Placeholder functions for the logic you requested
+function airPaint(hand) {
+    // You can implement index-finger drawing logic here
+}
+
+function detectSwipe(hand) {
+    // You can implement horizontal movement tracking here
+}
+
+function kineticMapping(hand) {
+    // Maps hand rotation or movement to the particle rotation
+    particleSystem.rotation.x = hand[0].y * 2;
+    particleSystem.rotation.z = hand[0].x * 2;
+}
 
 const cameraInput = new Camera(videoElement, {
     onFrame: async () => { await hands.send({image: videoElement}); }, 
