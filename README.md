@@ -63,21 +63,38 @@ Generative particles behaving like living matter through physics fields
 It showcases skills in:
 ## Computer Vision · Real-Time Rendering · Gesture UX · Creative Coding
 
-📈 Future Enhancements
+---
 
-Multiplayer shared canvas
+## 📸 Screenshots & Demos
 
-WebXR / AR integration
+_Show real-time interaction with your hands controlling the particle universe._
 
-Neural-network based gesture classifier
+| Gesture Control | Arcade Mode |
+|----------------|-------------|
+| ![Gesture Demo](assets/gesture-demo.gif) | ![Bubble Game](assets/bubble-pop.gif) |
 
-Sound-reactive particle fields
+> Add short GIFs recorded from your webcam showing:
+> - Thumbs-up gravity field  
+> - Peace-sign explosion  
+> - Air-painting trails  
+> - Bubble-pop mini game  
+
+---
+
+## 🚀 Future Enhancements
+
+- 🌐 **Multiplayer Shared Canvas** – Multiple users controlling the same particle world  
+- 🥽 **WebXR / AR Integration** – Particles floating in real-world environments  
+- 🧠 **Neural Gesture Classifier** – Custom ML-trained gesture recognition  
+- 🎵 **Sound-Reactive Fields** – Music-driven particle motion and color
 
 ---
 
 ## 👤 Author
 
-Barnik Basu
-Creative Technologist | Computer Vision | Interactive Media
+### **Barnik Basu**  
+**Creative Technologist · Computer Vision · Interactive Media**
 
-If this project impressed you, feel free to ⭐ the repository.
+I build immersive systems where **human motion becomes the interface**.
+
+If this project impressed you, please consider giving it a ⭐ — it truly helps!
