@@ -50,7 +50,7 @@ git clone https://github.com/barnikbasu/hand-gesture-particles
 Open index.html using GitHub Pages or any static server.
 Allow webcam permission and start interacting instantly.
 
-## 💡 Why This Project Matters
+💡 Why This Project Matters
 
 This is not just a visual demo — it is a human-computer interaction experiment that demonstrates:
 
@@ -63,7 +63,7 @@ Generative particles behaving like living matter through physics fields
 It showcases skills in:
 ## Computer Vision · Real-Time Rendering · Gesture UX · Creative Coding
 
-## 📈 Future Enhancements
+📈 Future Enhancements
 
 Multiplayer shared canvas
 
@@ -73,7 +73,9 @@ Neural-network based gesture classifier
 
 Sound-reactive particle fields
 
-👤 Author
+---
+
+## 👤 Author
 
 Barnik Basu
 Creative Technologist | Computer Vision | Interactive Media
