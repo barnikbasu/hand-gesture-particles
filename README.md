@@ -3,7 +3,7 @@
 An interactive **3D particle system controlled entirely by hand gestures** using  
 **MediaPipe Hands, Three.js, Fingerpose and real-time physics** — no controllers, no keyboard, just your hands.
 
-This project turns webcam hand-tracking into a **gesture-controlled creative engine & mini arcade game**.
+This project transforms webcam hand-tracking into a **gesture-controlled creative engine & mini arcade game**.
 
 ---
 
@@ -46,55 +46,37 @@ The project contains a hidden **gesture-controlled mini-game**:
 
 ```bash
 git clone https://github.com/barnikbasu/hand-gesture-particles
-
 Open index.html using GitHub Pages or any static server.
 Allow webcam permission and start interacting instantly.
 
-💡 Why This Project Matters
+📸 Screenshots & Demos
+Show real-time interaction with your hands controlling the particle universe.
 
-This is not just a visual demo — it is a human-computer interaction experiment that demonstrates:
+Gesture Control	Arcade Mode
 
-Vision-based interaction replacing hardware controllers
+Record short GIFs showing:
 
-Gestures as a full interaction language
+Thumbs-up gravity field
 
-Generative particles behaving like living matter through physics fields
+Peace-sign explosion
 
-It showcases skills in:
-## Computer Vision · Real-Time Rendering · Gesture UX · Creative Coding
+Air-painting trails
 
----
+Bubble-pop mini game
 
-## 📸 Screenshots & Demos
+🚀 Future Enhancements
+🌐 Multiplayer Shared Canvas – Multiple users controlling the same particle world
 
-_Show real-time interaction with your hands controlling the particle universe._
+🥽 WebXR / AR Integration – Particles floating in real-world environments
 
-| Gesture Control | Arcade Mode |
-|----------------|-------------|
-| ![Gesture Demo](assets/gesture-demo.gif) | ![Bubble Game](assets/bubble-pop.gif) |
+🧠 Neural Gesture Classifier – Custom ML-trained gesture recognition
 
-> Add short GIFs recorded from your webcam showing:
-> - Thumbs-up gravity field  
-> - Peace-sign explosion  
-> - Air-painting trails  
-> - Bubble-pop mini game  
+🎵 Sound-Reactive Fields – Music-driven particle motion and color
 
----
+👤 Author
+Barnik Basu
+Creative Technologist · Computer Vision · Interactive Media
 
-## 🚀 Future Enhancements
-
-- 🌐 **Multiplayer Shared Canvas** – Multiple users controlling the same particle world  
-- 🥽 **WebXR / AR Integration** – Particles floating in real-world environments  
-- 🧠 **Neural Gesture Classifier** – Custom ML-trained gesture recognition  
-- 🎵 **Sound-Reactive Fields** – Music-driven particle motion and color
-
----
-
-## 👤 Author
-
-### **Barnik Basu**  
-**Creative Technologist · Computer Vision · Interactive Media**
-
-I build immersive systems where **human motion becomes the interface**.
+I build immersive systems where human motion becomes the interface.
 
 If this project impressed you, please consider giving it a ⭐ — it truly helps!
