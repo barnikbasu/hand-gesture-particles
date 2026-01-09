@@ -156,3 +156,33 @@ function airPaint(hand){
   prevTip = tip;
 }
 
+let lastX = null;
+
+function detectSwipe(hand){
+  const x = hand[8].x;
+
+  if(lastX && Math.abs(x-lastX) > 0.12){
+    if(x > lastX) nextPreset();
+    else prevPreset();
+  }
+
+  lastX = x;
+}
+
+let lastPos=null, lastTime=Date.now();
+
+function kineticMapping(hand){
+  const now = Date.now();
+  const tip = hand[8];
+
+  if(lastPos){
+    const dist = Math.hypot(tip.x-lastPos.x, tip.y-lastPos.y);
+    const speed = dist / (now-lastTime);
+
+    particleSpeed = Math.min(speed*1000, 8);
+    particleHue += speed * 40;
+  }
+
+  lastPos = tip;
+  lastTime = now;
+}
