@@ -1,41 +1,55 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Gesture Particles</title>
-    <link rel="stylesheet" href="style.css">
+  <title>Gesture Particles</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div id="ui-container">
-        <h2>Gesture: <span id="gesture-name">None</span></h2>
-        <div class="controls">
-            <button id="heartBtn">❤️ Hearts</button>
-            <button id="flowerBtn">🌸 Flowers</button>
-            <button id="fireBtn">🎆 Fireworks</button>
-            <input type="color" id="colorPicker" value="#00ffcc">
-        </div>
-    </div>
-    <div id="video-container">
-        <video id="webcam" autoplay playsinline></video>
-    </div>
 
-    <!-- MediaPipe and Fingerpose -->
-    <script src="cdn.jsdelivr.net"></script>
-    <script src="cdn.jsdelivr.net"></script>
-    <script src="https://cdn.jsdelivr.net/npm/fingerpose@0.1.0/dist/fingerpose.min.js"></script>
+<div id="ui-container">
+  <h2>Gesture: <span id="gesture-name">None</span></h2>
+  <div class="controls">
+    <button id="heartBtn">❤️ Hearts</button>
+    <button id="flowerBtn">🌸 Flowers</button>
+    <button id="fireBtn">🎆 Fireworks</button>
+    <input type="color" id="colorPicker" value="#00ffcc">
+  </div>
+</div>
 
-    <script type="importmap">
-    {
-        "imports": {
-            "three": "unpkg.com"
-        }
-    }
-    </script>
-    <script type="module">
-        import { setTemplate, updateColor } from './main.js';
-        document.getElementById('heartBtn').onclick = () => setTemplate('hearts');
-        document.getElementById('flowerBtn').onclick = () => setTemplate('flowers');
-        document.getElementById('fireBtn').onclick = () => setTemplate('fireworks');
-        document.getElementById('colorPicker').onchange = (e) => updateColor(e.target.value);
-    </script>
+<div id="video-container">
+  <video id="webcam" autoplay playsinline></video>
+</div>
+
+<div id="scoreBoard"
+style="position:fixed;top:10px;left:10px;color:#00ffee;font-size:20px;font-family:monospace;">
+Score: 0
+</div>
+
+<!-- MediaPipe -->
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/hands/hands.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@mediapipe/camera_utils/camera_utils.js"></script>
+
+<!-- Fingerpose -->
+<script src="https://cdn.jsdelivr.net/npm/fingerpose@0.1.0/dist/fingerpose.min.js"></script>
+
+<!-- Three.js import map -->
+<script type="importmap">
+{
+  "imports": {
+    "three": "https://cdn.jsdelivr.net/npm/three@0.161.0/build/three.module.js"
+  }
+}
+</script>
+
+<!-- UI Controls -->
+<script type="module">
+import { setTemplate, updateColor } from './main.js';
+
+document.getElementById('heartBtn').onclick = () => setTemplate('hearts');
+document.getElementById('flowerBtn').onclick = () => setTemplate('flowers');
+document.getElementById('fireBtn').onclick = () => setTemplate('fireworks');
+document.getElementById('colorPicker').onchange = (e) => updateColor(e.target.value);
+</script>
+
 </body>
 </html>
