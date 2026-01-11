@@ -1,3 +1,7 @@
+
+let handField = null;
+let particleSpeed = 1;
+let particleHue = 0;
 import * as THREE from 'three';
 
 // ---------------- GESTURES ----------------
