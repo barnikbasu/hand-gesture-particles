@@ -1,0 +1,7 @@
+{
+  "name": "GestureFlow: Interactive Particle Canvas",
+  "description": "A high-performance real-time particle system controlled by hand gestures using MediaPipe and Canvas. Features multiple interaction modes like attraction, repulsion, and vortex creation.",
+  "requestFramePermissions": [
+    "camera"
+  ]
+}
