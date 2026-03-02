@@ -1,6 +1,10 @@
-import { Hands, Results } from '@mediapipe/hands';
-import { Camera } from '@mediapipe/camera_utils';
+import * as HandsNS from '@mediapipe/hands';
+import * as CameraNS from '@mediapipe/camera_utils';
 import React, { useEffect, useRef, useState } from 'react';
+
+// Defensive imports for MediaPipe in Vite
+const Hands = (HandsNS as any).Hands || (HandsNS as any).default?.Hands || (HandsNS as any).default;
+const Camera = (CameraNS as any).Camera || (CameraNS as any).default?.Camera || (CameraNS as any).default;
 
 interface HandTrackerProps {
   onResults: (results: Results) => void;
@@ -10,47 +14,58 @@ interface HandTrackerProps {
 export const HandTracker: React.FC<HandTrackerProps> = ({ onResults, isReady }) => {
   const videoRef = useRef<HTMLVideoElement>(null);
   const [error, setError] = useState<string | null>(null);
+  const [isInitializing, setIsInitializing] = useState(true);
 
   useEffect(() => {
-    if (!videoRef.current) return;
+    let camera: Camera | null = null;
+    let hands: Hands | null = null;
 
-    const hands = new Hands({
-      locateFile: (file) => {
-        return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
-      },
-    });
+    const init = async () => {
+      try {
+        if (!videoRef.current) return;
 
-    hands.setOptions({
-      maxNumHands: 2,
-      modelComplexity: 1,
-      minDetectionConfidence: 0.5,
-      minTrackingConfidence: 0.5,
-    });
+        hands = new Hands({
+          locateFile: (file) => {
+            return `https://cdn.jsdelivr.net/npm/@mediapipe/hands/${file}`;
+          },
+        });
 
-    hands.onResults((results) => {
-      onResults(results);
-    });
+        hands.setOptions({
+          maxNumHands: 2,
+          modelComplexity: 1,
+          minDetectionConfidence: 0.5,
+          minTrackingConfidence: 0.5,
+        });
 
-    const camera = new Camera(videoRef.current, {
-      onFrame: async () => {
-        if (videoRef.current) {
-          await hands.send({ image: videoRef.current });
-        }
-      },
-      width: 640,
-      height: 480,
-    });
+        hands.onResults((results) => {
+          onResults(results);
+        });
 
-    camera.start()
-      .then(() => isReady(true))
-      .catch((err) => {
-        console.error('Camera error:', err);
-        setError('Failed to access camera. Please ensure permissions are granted.');
-      });
+        camera = new Camera(videoRef.current, {
+          onFrame: async () => {
+            if (videoRef.current && hands) {
+              await hands.send({ image: videoRef.current });
+            }
+          },
+          width: 640,
+          height: 480,
+        });
+
+        await camera.start();
+        isReady(true);
+        setIsInitializing(false);
+      } catch (err) {
+        console.error('HandTracker initialization error:', err);
+        setError('Failed to initialize hand tracking. Please check camera permissions.');
+        setIsInitializing(false);
+      }
+    };
+
+    init();
 
     return () => {
-      camera.stop();
-      hands.close();
+      if (camera) camera.stop();
+      if (hands) hands.close();
     };
   }, [onResults, isReady]);
 
@@ -62,6 +77,11 @@ export const HandTracker: React.FC<HandTrackerProps> = ({ onResults, isReady }) 
         playsInline
         muted
       />
+      {isInitializing && (
+        <div className="absolute inset-0 flex items-center justify-center bg-black/60 p-2 text-[10px] text-white text-center">
+          Initializing...
+        </div>
+      )}
       {error && (
         <div className="absolute inset-0 flex items-center justify-center bg-red-500/80 p-2 text-[10px] text-white text-center">
           {error}
