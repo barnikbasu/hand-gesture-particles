@@ -1,6 +1,6 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Results } from '@mediapipe/hands';
-import { motion, AnimatePresence } from 'motion/react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { HandTracker } from './components/HandTracker';
 import { ParticleCanvas } from './components/ParticleCanvas';
 import { 
@@ -13,7 +13,8 @@ import {
   RotateCcw, 
   Bomb,
   Settings2,
-  Cpu
+  Cpu,
+  AlertCircle
 } from 'lucide-react';
 import { GoogleGenAI } from "@google/genai";
 
@@ -21,6 +22,7 @@ type Theme = 'neon' | 'ethereal' | 'matrix' | 'fire' | 'custom';
 type Mode = 'attract' | 'repel' | 'vortex' | 'shatter';
 
 export default function App() {
+  const [isMounted, setIsMounted] = useState(false);
   const [handResults, setHandResults] = useState<Results | null>(null);
   const [isCameraReady, setIsCameraReady] = useState(false);
   const [theme, setTheme] = useState<Theme>('neon');
@@ -29,6 +31,18 @@ export default function App() {
   const [mode, setMode] = useState<Mode>('attract');
   const [showControls, setShowControls] = useState(true);
   const [isGenerating, setIsGenerating] = useState(false);
+  const [appError, setAppError] = useState<string | null>(null);
+
+  useEffect(() => {
+    setIsMounted(true);
+    console.log("GestureFlow App Initialized");
+    const handleError = (e: ErrorEvent) => {
+      console.error("Runtime error caught:", e.error);
+      setAppError(e.message);
+    };
+    window.addEventListener('error', handleError);
+    return () => window.removeEventListener('error', handleError);
+  }, []);
 
   const handleResults = useCallback((results: Results) => {
     setHandResults(results);
@@ -37,13 +51,18 @@ export default function App() {
   const generateAITheme = async () => {
     setIsGenerating(true);
     try {
-      const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY });
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey || apiKey === "undefined") {
+        throw new Error("Gemini API Key is not configured.");
+      }
+      const ai = new GoogleGenAI({ apiKey });
       const response = await ai.models.generateContent({
         model: "gemini-3-flash-preview",
         contents: "Suggest a creative particle theme name and 4 hex colors for a hand-gesture interactive art app. Return ONLY JSON like { \"name\": \"string\", \"colors\": [\"#hex\", \"#hex\", \"#hex\", \"#hex\"] }",
       });
       
-      const data = JSON.parse(response.text.replace(/```json|```/g, '').trim());
+      const text = response.text;
+      const data = JSON.parse(text.replace(/```json|```/g, '').trim());
       if (data.colors && data.name) {
         setCustomColors(data.colors);
         setCustomThemeName(data.name);
@@ -51,12 +70,37 @@ export default function App() {
       }
     } catch (error) {
       console.error("AI Generation failed", error);
-      // Fallback
       setTheme('neon');
     } finally {
       setIsGenerating(false);
     }
   };
+
+  if (!isMounted) {
+    return (
+      <div className="flex items-center justify-center h-screen bg-black text-white">
+        <div className="animate-pulse text-xl font-black tracking-tighter italic uppercase">
+          Gesture<span className="text-cyan-400">Flow</span>
+        </div>
+      </div>
+    );
+  }
+
+  if (appError) {
+    return (
+      <div className="flex flex-col items-center justify-center h-screen bg-black text-white p-8 text-center">
+        <AlertCircle className="text-red-500 mb-4" size={48} />
+        <h1 className="text-2xl font-bold mb-2">Something went wrong</h1>
+        <p className="text-sm opacity-60 mb-6 max-w-md">{appError}</p>
+        <button 
+          onClick={() => window.location.reload()}
+          className="px-6 py-2 bg-white/10 border border-white/20 rounded-full hover:bg-white/20 transition-colors"
+        >
+          Reload Application
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="relative w-full h-screen bg-black overflow-hidden font-sans text-white">
